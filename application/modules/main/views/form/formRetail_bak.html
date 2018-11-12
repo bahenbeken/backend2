@@ -1,0 +1,220 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="col-md-12">
+  <div class="box primary">
+      <header class="text-success">
+          <div class="icons"><i class="fa fa-cube"></i></div>
+          <h5>RETAILER</h5>
+      </header>
+  </div>
+</div>
+<div class="col-md-12">
+  <form class="form-horizontal" action="" method="post" id="formsubmit"  style="margin-bottom:50px;">
+      <input type="hidden" name="id" id="id" value="{{ edit.id }}">
+      <div class="col-lg-5">
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Retail Name</label>
+            <div class="col-lg-7">
+              <input type="text" class="form-control" id="name" name="name" value="{{edit.name}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">ID Number</label>
+            <div class="col-lg-5">
+              <input type="text" class="form-control" id="identity_number" readonly name="identity_number" value="{% if edit.id !='' %}{{edit.identity_number}}{% else %}AUTO_NUMBER{% endif %}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Telephone</label>
+            <div class="col-lg-5">
+              <input type="text" class="form-control" id="telephone" name="telephone" value="{{edit.telephone}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Email</label>
+            <div class="col-lg-7">
+              <input type="text" class="form-control" id="email" name="email" value="{{edit.email}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Address</label>
+            <div class="col-lg-7">
+              <textarea class="form-control" id="address" name="address" required>{{edit.address}}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Region</label>
+            <div class="col-lg-5">
+              <input type="text" class="form-control" id="region" name="region" value="{{edit.region}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Place of Birth</label>
+            <div class="col-lg-5">
+              <input type="text" class="form-control" id="place_birth" name="place_birth" placeholder="optional" value="{{edit.place_birth}}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Date of Birth</label>
+            <div class="col-lg-3">
+              <input type="text" class="form-control datePicker" id="date_birth"  placeholder="optional" name="date_birth" value="{{edit.date_birth}}">
+            </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-12">
+          <div class="form-group">
+              <div class="col-lg-5">
+                  <input type="submit" class="btn btn-default" value="Save">
+                  <input type="button" class="btn btn-lighter" value="Cancel" onclick="window.location='{{base_url}}main/datamaster/retailer.html'">
+              </div>
+          </div>
+      </div>
+
+      </form>
+
+</div>
+
+<div class="col-md-12">
+
+
+  <div class="judul_sub">
+    <hr/>
+  </div>
+
+  <table id="dataList" class="display" cellspacing="0" width="100%">
+
+        <thead>
+
+          <tr>
+              <th>No.</th>
+              <th>Retailter Name</th>
+              <th>ID Number</th>
+              <th>Telephone</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Region</th>
+              <th>Birth</th>
+              <th>Proses</th>
+          </tr>
+          <tr>
+            <td>No.</td>
+            <td>Retailter Name</td>
+            <td>ID Numbe</td>
+            <td>Telephone</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>Region</td>
+            <td>Birth</td>
+            <td>Proses</td>
+          </tr>
+      </thead>
+      <tbody>
+          {% for dt in data %}
+          <tr>
+            <td>{{loop.index}}.</td>
+            <td>{{dt.name}}</td>
+            <td>{{dt.identity_number}}</td>
+            <td>{{dt.telephone}}</td>
+            <td>{{dt.email}}</td>
+            <td>{{dt.address}}</td>
+            <td>{{dt.region}}</td>
+            <td>{{dt.place_birth}}/{{dt.date_birth}}</td>
+            <td>
+                <a href="{{base_url}}main/datamaster/retailer/{{dt.id}}.html"><modify class='fa fa-pencil'></modify></a>
+                <a href="javascript:void(0);" onclick="andaYakin('{{base_url}}main/datamaster/deleteretailer/{{dt.id}}.html');"><remove class='fa fa-trash'></remove></a>
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+</div>
+
+
+
+
+
+<script language="javascript">
+
+
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    var x = 0;
+    $('#dataList thead tr:eq(1) td').each( function () {
+      var title = $(this).text();
+      if (!$(this).is(':last-child') && !$(this).is(':first-child') ) {
+        $(this).html( '<input type="text" style="color:#333" placeholder="Search '+title+'" />' );
+      }
+      else{
+        $(this).html("");
+      }
+
+  	} );
+
+  	// DataTable
+  	var table = $('#dataList').DataTable({
+      "bSortCellsTop": true,
+      "pageLenght" : 25,
+      "searching": true,
+      "aLengthMenu": [[25, 100, 200, -1], [25, 100, 200, "All"]],
+    });
+
+  	// Apply the search
+  	table.columns().every( function () {
+  		$('#dataList thead tr:eq(1) td input').on('keyup change', function () {
+        table.column($(this).parent().index() + ':visible').search(this.value).draw();
+      });
+  	});
+
+    if ($('#formsubmit').length) {
+        $("#formsubmit").validate({
+          rules: {
+            name: {
+              required: true,
+              minlength: 3
+            },
+            telephone: {
+              required: true,
+              digits: true
+            },
+            email: {
+              required: true,
+              email: true
+            },
+            address: {
+              required: true,
+              minlength: 3
+            },
+            region: {
+              required: true,
+              minlength: 3
+            }
+          }
+        });
+    }
+
+
+});
+
+if ($('.datePicker').length) {
+  $('.datePicker').datepicker({
+      dateFormat: 'yy-mm-dd',
+      yearRange: "1955:2005",
+      changeYear: true,
+      changeMonth: true,
+      prevText: '',
+      nextText: ''
+  });
+}
+</script>
+{% endblock %}

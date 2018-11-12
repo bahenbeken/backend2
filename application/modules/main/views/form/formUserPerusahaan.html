@@ -1,0 +1,133 @@
+{% extends "header.html" %}
+{% block content %}
+
+<div class="box primary">
+    <header class="text-success">
+        <div class="icons"><i class="fa fa-gears"></i></div>
+        <h5>UTILITAS</h5>
+    </header>
+</div>
+
+
+
+<p class="text-info">
+    <i class="fa fa-pencil"></i>&nbsp; Form User Tingkat Perusahaan
+    <hr>
+</p>
+    
+    <form class="form-horizontal" action="" method="post">
+        <input type="hidden" name="ID_USER" id="ID_USER" value="{{ edit.ID_USER}}" >
+        <div class="col-lg-5">
+            <div class="form-group">
+                <label for="text1" class="control-label col-lg-4">Email (digunakan sebagai ID)</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="EMAIL" name="EMAIL" placeholder="Email (ID)" value="{{edit.EMAIL}}" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text1" class="control-label col-lg-4">Password</label>
+
+                <div class="col-lg-8">
+                    <input type="password" id="PASS1" name="PASS1" placeholder="Password" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text1" class="control-label col-lg-4">Password (ketik ulang)</label>
+
+                <div class="col-lg-8">
+                    <input type="password" id="PASS2" name="PASS2" placeholder="Password" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text1" class="control-label col-lg-4">Nama Lengkap</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="NAMA_LENGKAP" name="NAMA_LENGKAP" placeholder="Nama Lengkap" value="{{edit.NAMA_LENGKAP}}" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="text1" class="control-label col-lg-4">Perusahaan</label>
+
+                <div class="col-lg-8">
+                    <input type="hidden" name="ID_PERUSAHAAN" id="ID_PERUSAHAAN" value="{{edit.ID_PERUSAHAAN_MITRA}}">
+                    <input type="text" id="NAMA_PERUSAHAAN" name="NAMA_PERUSAHAAN" value="{{edit.NAMA_PERUSAHAAN}}" placeholder="Perusahaan Mitra" class="form-control" onfocus="openPopup('{{base_url}}/main/popup/popupperusahaan.html')">
+                </div>
+            </div>
+            
+        </div>
+       
+            <!-- /.form-group -->
+        <div class="col-lg-12">
+            <div class="form-group">
+                <div class="col-lg-5">
+                    <input type="submit" class="btn btn-success" value="Simpan">
+                </div>
+            </div>
+        </div>
+
+        </form>
+
+
+
+<div class="col-lg-12">
+<p class="text-default">
+    <i class="fa fa-table"></i>&nbsp; Data User Tingkat Perusahaan
+    <hr>
+</p>
+
+
+<table id="dataList" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Nama Lengkap</th>
+            <th>Perusahaan</th>
+            <th>Proses</th>
+        </tr>
+    </thead>  
+</table>
+</div>
+<script language="javascript">
+
+$(document).ready(function() {
+    var table = $('#dataList').dataTable({
+        order: [], //Initial no order.
+        ajax: {
+            "url": "{{base_url}}main/Utilitas/getuserperusahaan.html",
+            "type": "POST"
+        },
+        columnDefs: [
+            { 
+                "targets": [0], //first column / numbering column
+                "orderable": true, //set not orderable
+            },
+            {
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<modify class='fa fa-pencil'></modify> <remove class='fa fa-trash'></remove>",
+                "width": "50px",
+            }
+        ]
+
+    });
+ 
+    $('#dataList tbody').on('click', 'modify', function () {
+        var data = table.api().row($(this).parents('tr')).data();
+        window.location = "{{base_url}}main/utilitas/userperusahaan/"+data[0]+".html";
+    });
+
+    $('#dataList tbody').on('click', 'remove', function () {
+        var data = table.api().row($(this).parents('tr')).data();
+        andaYakin("{{base_url}}main/utilitas/deleteuserperusahaan/"+data[0]+".html");
+    });
+
+
+
+});
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="col-md-12">
+  <div class="box primary">
+      <header class="text-success">
+          <div class="icons"><i class="fa fa-shopping-cart"></i></div>
+          <h5>Laporan Penjualan Per Customer</h5>
+      </header>
+  </div>
+</div>
+<div class="col-md-12">
+  <form class="form-horizontal" action="" method="post" id="formsubmit"  style="margin-bottom:50px;">
+      <input type="hidden" name="id" id="id" value="{{ edit.id }}">
+      <div class="col-lg-5">
+		
+		<div class="form-group">
+			<label for="text1" class="control-label col-lg-4">From Date</label>               
+			<div class="col-lg-6">
+				<input type="date" class="form-control" id="from_date" name="from_date">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="text1" class="control-label col-lg-4">To Date</label>               
+			<div class="col-lg-6">
+				<input type="date" class="form-control" id="to_date" name="to_date">
+			</div>
+		</div>
+		
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Customer</label>
+            <div class="col-lg-5" style="padding-right:0; margin-right:0;">
+              <input type="hidden" id="id_customer" name="id_customer" />
+              <input type="text" style="border-radius:5px 0px 0px 5px" class="form-control browseData" id="customer_name" name="customer_name" data-url="{{base_url}}main/popup/customer.html" data-width="70%" data-height="70%" readonly>
+            </div>
+            <div class="col-lg-1" style="padding-left:0; margin-left:0">
+              <a href="#" class="btn btn-metis-5 btn-rect browseData" data-url="{{base_url}}main/popup/customer.html" data-width="70%" data-height="70%"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Retailer</label>
+            <div class="col-lg-5" style="padding-right:0; margin-right:0;">
+              <input type="hidden" id="id_retailer" name="id_retailer" />
+              <input type="text" style="border-radius:5px 0px 0px 5px" class="form-control browseData" id="retailer_name" name="retailer_name" data-url="{{base_url}}main/popup/retailer.html" data-width="70%" data-height="70%" readonly>
+            </div>
+            <div class="col-lg-1" style="padding-left:0; margin-left:0">
+              <a href="#" class="btn btn-metis-5 btn-rect browseData" title="" data-url="{{base_url}}main/popup/retailer.html" data-width="70%" data-height="70%"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+		
+		<div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Sales</label>
+            <div class="col-lg-5" style="padding-right:0; margin-right:0;">
+              <input type="hidden" id="id_sales" name="id_sales" />
+              <input type="text" style="border-radius:5px 0px 0px 5px" class="form-control browseData" id="sales_name" name="sales_name" data-url="{{base_url}}main/popup/sales.html" data-width="70%" data-height="70%" readonly>
+            </div>
+            <div class="col-lg-1" style="padding-left:0; margin-left:0">
+              <a href="#" class="btn btn-metis-5 btn-rect browseData" title="" data-url="{{base_url}}main/popup/sales.html" data-width="70%" data-height="70%"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+          <div class="form-group">
+              <div class="col-lg-5" style="margin-top:20px;">
+				  <button type="button" onclick="displayReport();" class="btn btn-default-blue" ><i class="fa fa-print"></i>&nbsp;Display Report</button>
+				  <button type="button" onclick="resetFilter();" class="btn btn-default-blue" ><i class="fa fa-recycle"></i>&nbsp;Clear Filter</button>
+              </div>
+          </div>
+      </div>
+
+      </form>
+
+</div>
+
+<script language="javascript">
+function displayReport() {
+    var from_date = $("#from_date").val();
+    var to_date = $("#to_date").val();
+    var is_detail = "0";
+    
+    if($('#is_detail').is(':checked')) {
+        is_detail = "1";
+    }
+
+    var id_retailer = "-";
+    if($('#id_retailer').val() != "") {
+        id_retailer = $("#id_retailer").val();
+    }
+
+    var id_customer = "-";
+    if($('#id_customer').val() != "") {
+        id_customer = $("#id_customer").val();
+    }
+
+    var id_sales = "-";
+    if($('#id_sales').val() != "") {
+        id_sales = $("#id_sales").val();
+    }
+    
+	var deliverystatus = "-";
+    if($('#deliverystatus').val() != "") {
+        deliverystatus = "-";
+    }
+	
+    if(from_date !=="" && to_date !=="") {
+		var url = '{{base_url}}penjualan/reportpenjualan/penjualanCustomerDisplay/'+from_date+'/'+to_date+'/'+is_detail+'/'+id_retailer+'/'+id_customer+'/'+id_sales+'/'+deliverystatus;
+		alert(url);
+		openPopup(url);
+	}
+    else{
+        toastr["error"]("Anda harus memilih Tanggal (From Date, To Date)", "Notification");
+    }
+}
+
+function openPopup(url)
+{
+   $.fancybox.open({
+		href : url,
+		type : 'iframe',
+		helpers : {
+			media: true
+		},
+		width: "90%",
+		height: "98%",
+		autoSize: false,
+		scrolling: false
+   });
+}
+			
+function resetFilter() {
+  var firstObj = $(".tab_menu li").first();
+  $(".tab_menu > li").removeClass("activeTab");
+  $(firstObj).addClass("activeTab");
+
+  $("#id_customer").val('');
+  $("#customer_name").val('');
+  $("#id_retailer").val('');
+  $("#retailer_name").val('');
+  $("#id_sales").val('');
+  $("#sales_name").val('');
+  $("#from_date").val('');
+  $("#to_date").val('');
+
+  orderVar.is_detail = '1';
+  orderVar.id_customer = '-';
+  orderVar.id_retailer = '-';
+  orderVar.id_sales = '-';
+  orderVar.sales_name = '-';
+  orderVar.from_date = '-';
+  orderVar.to_date = '-';
+  orderVar.deliverystatus= '-';
+  
+  var url = "{{ base_url }}penjualan/reportpenjualan/penjualanCustomerDisplay/"+orderVar.from_date+"/"+orderVar.to_date+"/"+orderVar.is_detail+"/"+orderVar.id_retailer+"/"+orderVar.id_customer+"/"+orderVar.id_sales+'/'+orderVar.deliverystatus;
+  $('#dataList').DataTable().ajax.url(url).load();
+}
+
+</script>
+{% endblock %}

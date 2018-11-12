@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!--IE Compatibility modes-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--Mobile first-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Sanitas Mobile Backend</title>
+
+    <meta name="description" content="Sanitas Mobile Backend">
+    <meta name="author" content="">
+
+    <meta name="msapplication-TileColor" content="#5bc0de" />
+    <meta name="msapplication-TileImage" content="{{base_url}}assets/img/metis-tile.png" />
+
+    <link rel="shortcut icon" href="{{base_url}}assets/img/icon.png" />
+    {% include 'header_plugins.html' %}
+
+</head>
+
+<body class="login">
+
+
+<div class="form-signin">
+   <p align="center"><img src="{{base_url}}assets/img/sanitas_logo.png" alt="" style="width:100%;"></p>
+
+    <div class="tab-content">
+        <div id="login" class="tab-pane active">
+            <form action="" method="post" id="form_data">
+                
+                <div style="width: 45% !important; float:left;">
+                <img src="{{base_url}}assets/img/logo_padi.png" style="width: 100px;">
+                </div>
+                <div style="width: 55% !important; float:right;">
+                        <br>
+                    <input type="text" placeholder="Username" name="username" class="form-control top" required>
+                    <input type="password" placeholder="Password" name="password" class="form-control bottom" required>
+                    <br><br>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                <div align="right">
+                  <br />
+                  <a href="{{base_url}}main/login/forgotpassword.html" class="openPopup" data-width="400px" data-height="220px">Forgot your password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+  </div>
+  <div class="col-md-12">
+    <p align="center">
+      <br />
+      Copyright &copy; 2018, Techno One Consulting
+    </p>
+  </div>
+
+
+    <!--jQuery -->
+
+
+
+    <!--Bootstrap -->
+    <script src="{{base_url}}assets/lib/bootstrap/js/bootstrap.js"></script>
+
+
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+              if ($('#form_data').length) {
+                  $("#form_data").validate({
+                    rules: {
+                      username: {
+                        required: true,
+                        minlength: 3
+                      },
+                      password: {
+                        required: true,
+                        minlength: 3
+                      }
+                    }
+                  });
+              }
+            });
+        })(jQuery);
+    </script>
+
+
+    <script type="text/javascript">
+
+        {% if reset_password == 'reset' %}
+          $.fancybox.open({
+             href : "{{base_url}}main/login/resetpassword/{{user_table}}/{{user_id}}",
+             type : 'iframe',
+             helpers : {
+                 media: true
+             },
+             width: "500px",
+             height: "250px",
+             autoSize: false,
+             scrolling: false,
+             padding:0,
+             margin:0,
+          });
+        {% endif %}
+
+
+        {% if session.flashdata.type !='' %}
+        $(document ).ready(function() {
+          $.notify("{{ session.flashdata.notify }}", "{{ session.flashdata.type }}");
+        });
+        {% endif %}
+
+        $(".openPopup").on("click", function (e) {
+            e.preventDefault();
+            var frame_src = $(this).attr("href");
+            var frame_width = $(this).attr("data-width");
+            var frame_height = $(this).attr("data-height");
+
+            $.fancybox.open({
+                 href : frame_src,
+                 type : 'iframe',
+                 helpers : {
+                     media: true
+                 },
+                 width: frame_width,
+                 height: frame_height,
+                 autoSize: false,
+                 scrolling: false,
+                 padding:0,
+                 margin:0,
+            });
+
+        });
+    </script>
+</body>
+
+
+
+
+</html>

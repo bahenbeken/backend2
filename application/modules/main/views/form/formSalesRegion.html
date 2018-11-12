@@ -1,0 +1,156 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="col-md-12">
+  <div class="box primary">
+      <header class="text-success">
+          <div class="icons"><i class="fa fa-map"></i></div>
+          <h5>SALES REGION</h5>
+      </header>
+  </div>
+</div>
+<div class="col-md-12">
+  <form class="form-horizontal" action="" method="post" id="formsubmit"  style="margin-bottom:50px;">
+      <input type="hidden" name="id" id="id" value="{{ edit.id }}">
+      <div class="col-lg-5">
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Region Code</label>
+            <div class="col-lg-3">
+              <input type="text" class="form-control" id="kode_region" name="kode_region" value="{{edit.kode_region}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Region Name</label>
+            <div class="col-lg-7">
+              <input type="text" class="form-control" id="nama_lengkap" name="nama_region" value="{{edit.nama_region}}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="text1" class="control-label col-lg-4">Description</label>
+            <div class="col-lg-7">
+              <textarea  class="form-control" id="keterangan" name="keterangan">{{edit.keterangan}}</textarea>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-12">
+          <div class="form-group">
+              <div class="col-lg-5">
+                  <input type="submit" class="btn btn-default" value="Save">
+                  <input type="button" class="btn btn-lighter" value="Cancel" onclick="window.location='{{base_url}}/main/referensi/salesregion.html'">
+              </div>
+          </div>
+      </div>
+
+      </form>
+
+</div>
+
+<div class="col-md-12">
+
+
+  <div class="judul_sub">
+    <hr/>
+    <h4>saved data</h4>
+  </div>
+
+  <table id="dataList" class="display" cellspacing="0" width="100%">
+
+        <thead>
+
+          <tr>
+              <th>No.</th>
+              <th>Region Code</th>
+              <th>Region Name</th>
+              <th>Description</th>
+              <th>Proses</th>
+          </tr>
+          <tr>
+            <td>No.</td>
+            <td>Region Code</td>
+            <td>Region Name</td>
+            <td>Description</td>
+            <td>Proses</td>
+          </tr>
+      </thead>
+      <tbody>
+          {% for dt in data %}
+          <tr>
+            <td>{{loop.index}}.</td>
+            <td>{{dt.kode_region}}</td>
+            <td>{{dt.nama_region}}</td>
+            <td>{{dt.keterangan}}</td>
+            <td>
+                <a href="{{base_url}}main/referensi/salesregion/{{dt.id}}.html"><modify class='fa fa-pencil'></modify></a>
+                <a href="javascript:void(0);" onclick="andaYakin('{{base_url}}main/referensi/deletesalesregion/{{dt.id}}.html');"><remove class='fa fa-trash'></remove></a>
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+</div>
+
+
+
+
+
+<script language="javascript">
+
+
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    var x = 0;
+    $('#dataList thead tr:eq(1) td').each( function () {
+      var title = $(this).text();
+      if (!$(this).is(':last-child') && !$(this).is(':first-child') ) {
+        $(this).html( '<input type="text" style="color:#333" placeholder="Search '+title+'" />' );
+      }
+      else{
+        $(this).html("");
+      }
+
+  	} );
+
+  	// DataTable
+  	var table = $('#dataList').DataTable({
+      "bSortCellsTop": true,
+      "pageLenght" : 50,
+      "searching": false,
+      "aLengthMenu": [[25, 100, 200, -1], [25, 100, 200, "All"]],
+    });
+
+  	// Apply the search
+  	table.columns().every( function () {
+  		$('#dataList thead tr:eq(1) td input').on('keyup change', function () {
+        table.column($(this).parent().index() + ':visible').search(this.value).draw();
+      });
+  	});
+
+    if ($('#formsubmit').length) {
+        $("#formsubmit").validate({
+          rules: {
+            kode_region: {
+              required: true,
+              minlength: 3
+            }
+          }
+        });
+    }
+});
+
+if ($('.datePicker').length) {
+  $('.datePicker').datepicker({
+      dateFormat: 'yyy-mm-dd',
+      yearRange: "2015:2030",
+      changeYear: true,
+      changeMonth: true,
+      prevText: '',
+      nextText: ''
+  });
+}
+</script>
+{% endblock %}

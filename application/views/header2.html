@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="keywords" content="SISTEM PENGELOLAAN BARANG MILIK NEGARA">
+<meta name="author" content="SISTEM PENGELOLAAN BARANG MILIK NEGARA">
+<meta name="description" content="SISTEM PENGELOLAAN BARANG MILIK NEGARA">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanitas Mobile Backend System</title>
+<link href="{{ base_url }}assets/css/adminstyles.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" type="image/x-icon" href="{{ base_url }}assets/img/favicon.png" />
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/modernizr/modernizr.custom.js"></script>
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/jquery/jquery.min.js"></script> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/jquery/jquery-ui.min.js"></script> 
+
+<script type="text/javascript" src="{{ base_url }}assets/js/Notify.js"></script> 
+<!--Bootstrap--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/bootstrap/bootstrap.min.js"></script> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/forms/jquery.validate.min.js"></script> 
+
+<script type="text/javascript" src="{{ base_url }}assets/3rdparty/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="{{ base_url }}assets/3rdparty/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+
+<script type="text/javascript">
+  var base_url = "{{ base_url }}";
+</script>
+<!--
+<script type="text/javascript" src="{{ base_url }}assets/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="{{ base_url }}assets/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+-->
+</head>
+
+<body>
+<div id="notifications"></div>
+<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper"></nav>
+{% block content %}{% endblock %} 
+
+
+
+
+<!--Fullscreen--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/fullscreen/screenfull.min.js"></script> 
+
+<!--NanoScroller--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/nanoscroller/jquery.nanoscroller.min.js"></script> 
+
+<!--Sparkline--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/sparkline/jquery.sparkline.min.js"></script> 
+
+<!--Horizontal Dropdown--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/horisontal/cbpHorizontalSlideOutMenu.js"></script> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/classie/classie.js"></script> 
+
+<!--PowerWidgets--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/powerwidgets/powerwidgets.min.js"></script> 
+
+<!--Morris Chart--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/raphael/raphael-min.js"></script> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/morris/morris.min.js"></script> 
+
+
+
+<!--ToDo--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/todos/todos.js"></script> 
+
+<!--SkyCons--> 
+<script type="text/javascript" src="{{ base_url }}assets/js/vendors/skycons/skycons.js"></script> 
+<script>
+  var icons = new Skycons({"color": "#fff"}),
+      list  = [
+        "clear-day", "clear-night", "partly-cloudy-day",
+        "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+        "fog"
+      ],
+      i;
+
+  for(i = list.length; i--; )
+    icons.set(list[i], list[i]);
+
+  icons.play();
+</script>
+<script language="javascript">
+
+var tableToExcel = (function() {
+    var uri = 'data:application/vnd.ms-excel;base64,', template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>', base64 = function(
+            s) {
+        return window.btoa(unescape(encodeURIComponent(s)))
+    }, format = function(s, c) {
+        return s.replace(/{(\w+)}/g, function(m, p) {
+            return c[p];
+        })
+    }
+    return function(table, name) {
+        if (!table.nodeType)
+            table = document.getElementById(table);
+        var cln=table.cloneNode(true);
+        var paras = cln.getElementsByClassName('ignore');
+
+        while(paras[0]) {
+            paras[0].parentNode.removeChild(paras[0]);
+        }
+        var ctx = {
+            worksheet : name || 'Worksheet',
+            table : cln.innerHTML
+        }
+        window.location.href = uri + base64(format(template, ctx))
+    }
+})();
+
+function andaYakin(url)
+{
+  if(confirm("Apakah anda yakin?"))
+  {
+    window.location = url;
+  }
+  else{
+    return false;
+  }
+}
+   
+function andaYakinNext(url)
+{
+  if(confirm("Apakah anda yakin? ini akan memvalidasi usulan tersebut di tahap ini"))
+  {
+    window.location = url;
+  }
+  else{
+    return false;
+  }
+}
+
+
+</script> 
+
+<script type="text/javascript" src="{{ base_url }}assets/js/autoselect.js"></script> 
+<script type="text/javascript" src="{{ base_url }}assets/js/scripts.js"></script> 
+
+
+{% if session.flashdata.alert !='' %}
+<script type="text/javascript">
+$(document ).ready(function() {
+  Notify("{{ session.flashdata.alert }}",null, null, 'success');
+});
+</script>
+{% endif %}
+
+
+<!--/Scripts-->
+
+</body>
+</html>
